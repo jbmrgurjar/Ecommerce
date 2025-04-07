@@ -26,7 +26,7 @@ const Projectinfo = () => {
   // put shimmer UI
   if (obj == null) return <></>;
 
-  let { thumbnail, title, category, price, rating, stock , meta} = obj;
+  let { thumbnail, title, category, price, rating, stock , meta,description} = obj;
    let light="h-[92vh] w-screen[96vh]  pt-12 bg-white "
   let dark="h-[92vh] w-screen[96vh] pt-12 bg-black  text-white"
   let light1="card card-side bg-white shadow-xl w-1/2 mx-auto "
@@ -59,8 +59,12 @@ const Projectinfo = () => {
               <div className="badge badge-secondary">{stock}</div>
             </button>
             <div> <img src={ meta.qrCode} alt="QR Code" className="h-14 w-14" /></div>
+
           </div>
-          <div className="card-actions justify-end">
+          <div className="pt-4 font-mono">
+              <p>{description}</p>
+            </div>
+          <div className="card-actions justify-end pt-4 font-mono">
             <button className="btn btn-primary" onClick={()=> dispatch(addCart(obj))}>Add to cart </button>
           </div> 
         </div>
