@@ -11,8 +11,7 @@ let dark="card bg-black text-white w-80 h-96 shadow-xl mx-3 mt-7"
   return (
 
 
-    // <div>
-
+   
 <div className={theme=="Light"?light:dark}>
   <figure className='h-3/6 w-full'>
     <img className='w-full h-full'

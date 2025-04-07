@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import CartRow from "./CartRow";
 import { useSelector ,useDispatch} from "react-redux";
 import { sortAscending , sortDescending  , clearCart} from "../utility/Store/cartSlice";
-
+import { ThemeData } from "../assets/ThemeContext";
 
 const Cart = () => {
   let cartItems = useSelector((store)=> store.cart.items )
   let dispatch = useDispatch();
+  const {theme}=useContext(ThemeData);
+  let light="overflow-x-auto px-4 text-black  bg-white"
+  let dark="overflow-x-auto px-4 text-white bg-black"
   return (
-    <div className="overflow-x-auto px-4  ">
+    <div className=  {theme=="Light"?light:dark}>
       <table className="table">
         <thead className="text-2xl">
           <tr>

@@ -1,103 +1,74 @@
-import React, { useEffect ,useState ,useContext } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
+import CallSingleProduct from "../utility/Store/CallSingleProduct";
+// import { ThemeData } from "../assets/ThemeContext"
 import { ThemeData } from "../assets/ThemeContext";
-import { useDispatch } from "react-redux";
-// import useGetProductInfo from "./assets/useGetProductInfo";
-import SimmerUIProjectinfo from "./SimmerUIProjectinfo";
+import { useDispatch ,useSelector} from "react-redux";
+import{addCart} from "../utility/Store/cartSlice"
 
-const ProductInfo = () => {
-     const [obj , setObj ] = useState(null);
-     
 
-   
-  let{theme}=useContext(ThemeData)
 
-    let {id} = useParams();
-    let getdata=( async()=>{
-        let data=await fetch (`https://dummyjson.com/products/${id}`);
-        let object= await data.json();
-        setObj(object)
 
-    })
-    useEffect(()=>{
-getdata();
-    },[])
-    let handleClick = () => {
-      Navigate(`/product/${id}`);
-    };
+const Projectinfo = () => {
+  let { id } = useParams();
+  const {theme}=useContext(ThemeData);
+  let obj =CallSingleProduct(id);
+  let dispatch = useDispatch();
 
-    let dispatch = useDispatch();
-    let handleAddbtn = (event) => {
-  
-      dispatch(addCart(obj));
-      
-      event.stopPropagation()
-    }
-  
-   
+  let cartItems = useSelector((store=> store.cart.items ))
 
-    if (obj == null){
-        return <SimmerUIProjectinfo></SimmerUIProjectinfo>
-    }
 
-  let {
-    title,
-    description,
-    category,
-    price,
-    rating,
-    stock,
-    tags,
-    brand,
-    images,
-    meta ,
-    
-  } = obj;
+  let isPresentIncart = ()=>{
+    let objIdx = cartItems.findIndex((cartObj)=> cartObj.dataObj.id == id );
+    return objIdx
+  }
 
-  let light = "w-full h-full bg-white flex justify-center pt-10";
-  let dark = "w-full h-full bg-black text-white flex justify-center pt-10";
-   
-  let light1="w-[60%] h-full  card  card-side  bg-blue-100 mb-14  shadow-lg"
-  let dark1="w-[60%] h-full  card  card-side  bg-black text-white mb-14 shadow-lg"
+  // put shimmer UI
+  if (obj == null) return <></>;
+
+  let { thumbnail, title, category, price, rating, stock , meta} = obj;
+   let light="h-[92vh] w-screen[96vh]  pt-12 bg-white "
+  let dark="h-[92vh] w-screen[96vh] pt-12 bg-black  text-white"
+  let light1="card card-side bg-white shadow-xl w-1/2 mx-auto "
+  let dark1="card card-side bg-black shadow-xl w-1/2 mx-auto "
   return (
-    <div className={theme=="Light"?light:dark} onClick={handleClick}>
+    <div  className={theme=="Light"?light:dark}>
+   
       <div className={theme=="Light"?light1:dark1}>
-        <figure className=" m-5  w-[60%] ">
-          <img
-            src={images[0]}
-            alt="Album"
-            className="h-full w-full rounded-xl bg-amber-100"
-          />
+      { isPresentIncart() !=-1 ?  <p  className="bg-orange-500 rounded-2xl  absolute text-black p-1 top-3 left-3 font-bold"> Added in Cart  </p> : null }
+        <figure>
+          <img src={thumbnail} alt="product" />
         </figure>
-        <div className="card-body ">
-          <h2 className="card-title text-2xl">{title}</h2>
-          <p className="text-sm"> {brand}</p>
-          <p className="text-xs">{description}</p>
-
-          <div className="badge bg-amber-200 text-black ">Rating: {rating}</div>
-          
-        
-          <div className="badge    bg-slate-200 text-black">Category: {category}
-      
-          </div>
-          {tags.map((ele ,idx) => {
-              return <div key={idx} className="badge  bg-lime-300 text-black "> {ele}</div>;
-            })}
-
-          <div className="badge border-l-indigo-400 text-black ">Stock : {stock}</div>
-
-          <div className="card-actions flex  justify-between">
-            <div className="text-3xl ">Price : {price} $</div>
-        
+        <div className="card-body">
+          <h2 className="card-title">{title}</h2>
+          <div>
+            <button className="btn m-1">
+              Price
+              <div className="badge badge-secondary">{price}</div>
+            </button>
+            <button className="btn m-1">
+              Rating
+              <div className="badge badge-secondary">{rating}</div>
+            </button>
+            <button className="btn m-1">
+              category
+              <div className="badge badge-secondary">{category}</div>
+            </button>
+            <button className="btn m-1">
+              Stock
+              <div className="badge badge-secondary">{stock}</div>
+            </button>
             <div> <img src={ meta.qrCode} alt="QR Code" className="h-14 w-14" /></div>
-
-            <button className="btn btn-primary" onClick={handleAddbtn}>Add</button>
-           
           </div>
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary" onClick={()=> dispatch(addCart(obj))}>Add to cart </button>
+          </div> 
         </div>
       </div>
+      
     </div>
+    
   );
 };
 
-export default ProductInfo;
+export default Projectinfo;

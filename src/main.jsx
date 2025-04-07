@@ -4,7 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import ErrorPage from './Component/ErrorPage.jsx'
 import Home from './Component/Home.jsx'
-import Productinfo from './Component/ProjectInfo.jsx'
+// import Projectinfo from './Component/Projectinfo.jsx'
+import Projectinfo from "./Component/Projectinfo";
+
 import Food from './Component/Food.jsx'
 import FoodCardinfo from './Component/FoodCardinfo.jsx'
 
@@ -27,8 +29,8 @@ let appRouter = createBrowserRouter([
     }, {
       path: "/Cart", element: <Cart></Cart>
     },{
-      path:"/productInfo/:id",
-      element:<Productinfo></Productinfo>
+      path:"/projectInfo/:id",
+      element:<Projectinfo></Projectinfo>
     },{
       path: "/food",
       element:(<Suspense fallback={<SimmerUIProjectinfo></SimmerUIProjectinfo>}>

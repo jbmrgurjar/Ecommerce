@@ -76,8 +76,8 @@ const Home = () => {
   // }
   // console.log(search)
   let {theme}=useContext(ThemeData)
-  let light=" min-h-screen w-full bg-white p-4"
-  let dark=" min-h-screen w-full bg-black  text-white p-4"
+  let light=" min-h-screen w-full bg-white "
+  let dark=" min-h-screen w-full bg-black  text-white"
 
   return (
     <div className={theme=="Light"?light:dark}>
@@ -126,7 +126,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-wrap justify-around">
+      <div className="AllCard  flex flex-wrap justify-around ">
         {showData.map((obj) => <>{isPresentIncart(obj.id)!=-1 ?<AddedComponent obj={obj} key={obj.id}></AddedComponent> :  <ProjectCard obj={obj} key={obj.id}></ProjectCard>}</>)}
       </div>
     </div>
